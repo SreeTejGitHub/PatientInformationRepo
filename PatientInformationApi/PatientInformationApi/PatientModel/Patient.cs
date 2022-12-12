@@ -11,7 +11,7 @@ namespace PatientInformationApi.PatientModel
         public string gender { get; set; }
         public string phoneNumber { get; set; }
         public string emailAddress { get; set; }
-        public string dateOfAdmission { get; set; }
+        public DateTime dateOfAdmission { get; set; }
     }
 }
 
