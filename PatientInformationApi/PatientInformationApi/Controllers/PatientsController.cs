@@ -9,19 +9,29 @@ namespace PatientInformationApi.Controllers
     [ApiController]
     public class PatientsController : ControllerBase
     {
-        [HttpGet(Name = "GetAllPatients")]
+        [Route("GetAllPatients")]
+        [HttpGet]
         public List<Patient> GetAllPatients ()
         {
             HRSManager objhrs = new HRSManager();
             return objhrs.GetAllPatient();
         }
 
-
-        [HttpPost(Name = "UpdatePatientIData")]
-        public string UpdatePatientIData(Patient patientInfo)
+        [Route("UpdatePatientData")]
+        [HttpPost]
+        public string UpdatePatientData(Patient patientInfo)
         {
             HRSManager objhrs = new HRSManager();
             return objhrs.updatePatientData(patientInfo);
+        }
+
+        [Route("DeletePatientData")]
+        [HttpPost]
+        public string DeletePatientData(int patientId)
+        {
+            HRSManager objhrs = new HRSManager();
+            return objhrs.DeletePatientData(patientId);
+            
         }
     }
 }

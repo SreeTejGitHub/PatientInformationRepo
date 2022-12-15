@@ -88,7 +88,6 @@ namespace PatientInformationApi.DAL
                             objLabResult.name = dt.Rows[i]["name"].ToString();
                             objLabResult.value = Convert.ToString(dt.Rows[i]["value"]);
                             objLabResult.valueType = Convert.ToString(dt.Rows[i]["valueType"]);
-                            //objLabResult.labId = Convert.ToString(dt.Rows[i]["gender"]);
                             objLabResult.enteredTime = Convert.ToDateTime(dt.Rows[i]["enteredTime"]);
                             objLabResult.timeOfTest = Convert.ToString(dt.Rows[i]["timeOfTest"]);
                             objLabResultList.Add(objLabResult);
@@ -129,6 +128,7 @@ namespace PatientInformationApi.DAL
                     cmd.Parameters.AddWithValue("@patientGender", patientInfo.gender);
                     cmd.Parameters.AddWithValue("@patientEmailAddress", patientInfo.emailAddress);
                     cmd.Parameters.AddWithValue("@patientDateOfAdmission", patientInfo.dateOfAdmission);
+                    cmd.Parameters.AddWithValue("@Flag", 1);
                     cmd.Parameters.Add("@Status", SqlDbType.VarChar, 500);
                     cmd.Parameters["@Status"].Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
@@ -142,6 +142,39 @@ namespace PatientInformationApi.DAL
             }
 
              return status;
+        }
+
+        public string DeletePatientData(int PatientId)
+        {
+            string status = "";
+            var builder = new SqlConnectionStringBuilder();
+            builder.DataSource = "103.108.220.125";
+            builder.InitialCatalog = "BKDigital";
+            builder.UserID = "BKDigital";
+            builder.Password = "Burger$2019@!";
+            try
+            {
+                using (SqlConnection sqlcon = new SqlConnection(builder.ConnectionString))
+                {
+                    sqlcon.Open();
+                    SqlCommand cmd = sqlcon.CreateCommand();
+                    cmd.CommandText = "SP_InsertUpdate_PatientDetails";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@PatientId", PatientId);
+                    cmd.Parameters.AddWithValue("@Flag", 0);
+                    cmd.Parameters.Add("@Status", SqlDbType.VarChar, 500);
+                    cmd.Parameters["@Status"].Direction = ParameterDirection.Output;
+                    cmd.ExecuteNonQuery();
+                    status = (string)cmd.Parameters["@Status"].Value;
+                    sqlcon.Close();
+                }
+            }
+            catch (Exception err)
+            {
+                status = err.ToString();
+            }
+
+            return status;
         }
     }
 }
