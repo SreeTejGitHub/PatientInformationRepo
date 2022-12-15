@@ -8,7 +8,7 @@ namespace PatientInformationApi.PatientModel
         public string value { get; set; }
         public string valueType { get; set; }
         public string timeOfTest { get; set; }
-        public string enteredTime { get; set; }
+        public DateTime enteredTime { get; set; }
     }
 }
 
